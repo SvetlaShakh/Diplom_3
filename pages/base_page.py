@@ -24,7 +24,7 @@ class BasePage:
             expected_conditions.visibility_of_element_located(element))
 
     def wait_for_invisibility_of_element(self, element):
-        WebDriverWait(self.driver, 5000).until(
+        WebDriverWait(self.driver, 11000).until(
             expected_conditions.invisibility_of_element_located(element))
 
     def wait_for_load_page(self, url):
@@ -37,7 +37,7 @@ class BasePage:
     def get_text_of_element(self, element):
         return self.driver.find_element(*element).text
 
-    def check_displayed_element(self, element):
+    def is_displayed_element(self, element):
         return self.driver.find_element(*element).is_displayed()
 
     @allure.step('Открыть главную страницу "Stellar Burgers')
@@ -50,6 +50,7 @@ class BasePage:
 
     @allure.step('Заполнить поле "Email"')
     def send_email(self, email):
+        self.wait_for_visibility_of_element(BurgerLocators.INPUT_EMAIL_LOGIN_WINDOW)
         element = BurgerLocators.INPUT_EMAIL_LOGIN_WINDOW
         self.send_key_to_field(element, email)
 
@@ -67,10 +68,14 @@ class BasePage:
 
     @allure.step('Кликнуть по кнопке "Войти в аккаунт"')
     def click_on_personal_account_button(self):
+        self.wait_for_invisibility_of_element(BurgerLocators.OVERLAY_WINDOW)
+        self.wait_for_element_to_be_clickable(BurgerLocators.BUTTON_PERSONAL_ACCOUNT)
         self.click_on_button(BurgerLocators.BUTTON_PERSONAL_ACCOUNT)
 
     @allure.step('Кликнуть по кнопке "Лента Заказов"')
     def click_on_button_order_list(self):
+        self.wait_for_invisibility_of_element(BurgerLocators.OVERLAY_WINDOW)
+        self.wait_for_invisibility_of_element(BurgerLocators.OVERLAY_WINDOW_BUTTON_ORDER_LIST)
         self.click_on_button(BurgerLocators.BUTTON_ORDER_LIST)
 
     @allure.step('Кликнуть по кнопке "Войти"')
@@ -79,11 +84,38 @@ class BasePage:
 
     @allure.step('Кликнуть по кнопке "Оформить заказ"')
     def click_on_button_place_an_order(self):
+        self.wait_for_invisibility_of_element(BurgerLocators.OVERLAY_WINDOW)
         self.click_on_button(BurgerLocators.BUTTON_PLACE_AN_ORDER)
 
     @allure.step('Кликнуть по кнопке "История заказов"')
     def click_on_link_order_history(self):
+        self.wait_for_invisibility_of_element(BurgerLocators.OVERLAY_WINDOW)
+        self.wait_for_visibility_of_element(BurgerLocators.LINK_ORDER_HISTORY)
         self.click_on_button(BurgerLocators.LINK_ORDER_HISTORY)
+
+    @allure.step('Авторизоваться на сайте')
+    def auth_test_user(self, test_user):
+        email_test_user = test_user['email']
+        password_test_user = test_user['password']
+        self.open_home_page()
+        self.delete_cookie()
+        self.click_on_personal_account_button()
+        self.send_email(email_test_user)
+        self.send_password(password_test_user)
+        self.click_on_login_button()
+        self.wait_for_visibility_of_element(BurgerLocators.IMG_INGREDIENT)
+
+    @allure.step('Собрать бургер')
+    def create_burger(self):
+        self.wait_for_visibility_of_element(BurgerLocators.IMG_INGREDIENT)
+        self.drag_element(BurgerLocators.IMG_INGREDIENT_BUN, BurgerLocators.BURGER_CONSTRUCTOR_BASKET)
+        self.drag_element(BurgerLocators.IMG_INGREDIENT_SAUCE, BurgerLocators.BURGER_CONSTRUCTOR_BASKET)
+        self.drag_element(BurgerLocators.IMG_INGREDIENT_FILLING, BurgerLocators.BURGER_CONSTRUCTOR_BASKET)
+
+    @allure.step('Заказать бургер')
+    def order_burger(self):
+        self.create_burger()
+        self.click_on_button_place_an_order()
 
     @allure.step('Получить текущий URL страницы')
     def get_url(self):

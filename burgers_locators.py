@@ -20,7 +20,6 @@ class BurgerLocators:
     IMG_INGREDIENT_FILLING = [By.XPATH, ".//h2[text()='Начинки']/following-sibling::ul/a[1]/img"]
     COUNT_INGREDIENT_FILLING = [By.XPATH,
                                 ".//h2[text()='Начинки']/following-sibling::ul/a[1]//p[contains(@class, 'counter')]"]
-    # BURGER_CONSTRUCTOR_BASKET = [By.XPATH, ".//section[contains(@class, 'basket')]/ul"]
     BURGER_CONSTRUCTOR_BASKET = [By.XPATH, ".//section[contains(@class, 'basket')]"]
 
     # order window in home page
@@ -42,7 +41,6 @@ class BurgerLocators:
     BUTTON_RESTORE = [By.XPATH, ".//button[text()='Восстановить']"]
 
     # reset password page
-    BUTTON_SAVE = [By.XPATH, ".//button[text()='Сохранить']"]
     INPUT_PASSWORD_ACTIVE = [By.XPATH, ".//label[text()='Пароль']/parent::div[contains(@class, 'active')]"]
     ICON_VISIBLE_PASSWORD = [By.XPATH, ".//label[text()='Пароль']/parent::div/div"]
 
@@ -62,6 +60,9 @@ class BurgerLocators:
     # feed page receipt window
     RECEIPT_BURGER = [By.XPATH, ".//div[contains(@class, 'orderBox')]/p[text()='Cостав']"]
 
-    # Modal_modal_overlay__x2ZCr
+    # overlay
     OVERLAY_WINDOW = [By.XPATH, ".//div[contains(@class, 'Modal_modal_overlay__x2ZCr')]/parent::div"]
     OVERLAY_WINDOW_SECTION = [By.XPATH, ".//div[contains(@class, 'Modal_modal_overlay__x2ZCr')]/parent::section"]
+    OVERLAY_WINDOW_BUTTON_ORDER_LIST = [By.XPATH,
+                                        ".//div[contains(@class, 'Modal_modal__contentBox__sCy8X pt-30 pb-30')]"
+                                        "/parent::div"]
